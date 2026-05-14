@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from BE.app.auth.keycloak_auth import get_current_user
-from BE.app.auth.permissions import require_roles
-from BE.app.database.deps import get_db
-from BE.app.models.user_profile import UserProfile
-from BE.app.schemas.user_schema import UpdateProfileRequest
+from app.auth.keycloak_auth import get_current_user
+from app.auth.permissions import require_roles
+from app.database.deps import get_db
+from app.models.user_profile import UserProfile
+from app.schemas.user_schema import UpdateProfileRequest
 
 router = APIRouter()
 
@@ -16,6 +16,7 @@ def get_me(
     db: Session = Depends(get_db)
 ):
     username = user.get("preferred_username")
+    print(UserProfile.username)
 
     profile = db.query(UserProfile).filter(
         UserProfile.username == username

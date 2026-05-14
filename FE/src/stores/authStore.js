@@ -16,7 +16,8 @@ export const useAuthStore = defineStore("auth", {
     async initAuth() {
 
       const authenticated = await keycloak.init({
-        onLoad: "check-sso",
+        onLoad: "login-required",
+        pkceMethod: "S256",
         checkLoginIframe: false,
       });
 

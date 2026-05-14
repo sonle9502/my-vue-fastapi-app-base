@@ -1,1 +1,1 @@
-from BE.app.schemas.user_schema import UpdateProfileRequest
+from app.schemas.user_schema import UpdateProfileRequest

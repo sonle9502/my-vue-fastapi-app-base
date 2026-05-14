@@ -6,7 +6,7 @@ security = HTTPBearer()
 
 KEYCLOAK_PUBLIC_KEY = """
 -----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuiAvKYUJeBnLeGCcIbjgrmjNCe98rJSqkZhoPiAE3mxilsN/AtWZOEt6VlmYKfl+2vpNvCExg5vFDomPY7onCgebP5glkvhVGWtAY/vd6kk+0DNEZlOHD1mbh1vex8QQBDKhIwtyRUv+VyAQDlqjebcj/fvQEhG+2cx8E/IzIe1pTXXvN3qyUtrIgIDq6BZlCBwohAYpXxTSQTkkKTMHGSkiW/wywD1ovC9HDlNLbQuqKpgw6lTvnPxBy3SzLaqjU7vu/5bkWCB+0KDuhY3ZGG5C+DCB+DY4kKu0se441qRo8NYqP9qhXCDKsA3g+8mqpWKZfmad5U7+TPf86UdSpQIDAQAB
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1oq3otzNJGV5AiV5eWuIIFMqmG53J5MUxsLSFiy+18v0zXPxK3r3fh/up2u1a4gS5GdnmKZbiRCMox95nDHfWbtdIkU1GKiYym0dk/eiu3eiUZ7G4RPV7sU2Xf5zPvlCkof/4ePrOQVqXW1wOxJA00pCOUu9vPU1AvFmbYxng6PDQLyVqN7m4HRDAYYYqNOB99Y1mHKdijeJDBunT73erixWjn2lj7BPEJmiakP1/s2oHYaz+IAWYOGnxAF+fZMK8rlYAaPc6x/uiKkeoLfQa4IE2HouHO0xm4DJ7k5mmTchcREUjP3cN5UDAk3i0vMfx3WKAQT09rVWLwrfeSOgPwIDAQAB
 -----END PUBLIC KEY-----
 """
 
@@ -20,12 +20,14 @@ def get_current_user(
     token = credentials.credentials
 
     try:
-
+        print(KEYCLOAK_PUBLIC_KEY)
         payload = jwt.decode(
             token,
             KEYCLOAK_PUBLIC_KEY,
             algorithms=[ALGORITHM],
             options={"verify_aud": False},
+            issuer="http://localhost:8080/realms/my-app",
+            
         )
 
         print(payload)
@@ -35,7 +37,7 @@ def get_current_user(
     except Exception as e:
 
         print("JWT ERROR:", e)
-
+        
         raise HTTPException(
             status_code=401,
             detail="Invalid token"
